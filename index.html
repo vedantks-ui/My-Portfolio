@@ -59,12 +59,11 @@
 <body>
     <div class="main-card">
         <h1>Vedant Sanadhya</h1>
-        <p class="bio">"Vedant | Aspiring Blockchain Developer. Currently studying in IIT Roorkee and learning how to build secure smart contracts and interactive Web3 frontends.</p>
+        <p class="bio">"Vedant | Aspiring to be a Blockchain Developer. Currently studying in IIT Roorkee and learning how to build smart contracts and  Web3 frontends.</p>
         
         <div class="web3-box">
             <h2>My First Web3 App</h2>
             <p>Stored Number: <span id="val-display">0</span></p>
-            
             <input type="number" id="numInput" placeholder="Enter a number">
             <br>
             <button class="btn" onclick="sendData()">Submit</button>
@@ -74,7 +73,8 @@
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
 <script>
     const contractAddr = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-    const myAbi = [
+    const myAbi =
+    [
         "function set(uint256 _value) public",
         "function get() public view returns (uint256)"
     ];
@@ -90,16 +90,14 @@
             showValue();
         } else 
         {
-            alert("Please install MetaMask");
+            alert("not installed MetaMask");
         }
     }
-
     async function showValue() 
     {
         const result = await myContract.get();
         document.getElementById("val-display").innerText = result.toString();
     }
-
     async function saveNewValue() 
     {
         const input = document.getElementById("numInput").value;
@@ -110,7 +108,6 @@
         status.innerText = "Done!";
         showValue();
     }
-
     window.onload = start;
 </script>
 <div class="about-section">
@@ -124,4 +121,5 @@
     </div>
 </div>
 </body>
+
 </html>
