@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vedant Portfolio</title>
+    <style>
+        body 
+        {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f3;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .main-card 
+        {
+            background: white;
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 { margin-bottom: 5px; color: #222; }
+        .bio { font-style: italic; color: #666; margin-bottom: 25px; }
+        .web3-box 
+        {
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+        input 
+        {
+            width: 60%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .btn 
+        {
+            background-color: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover { background-color: #1d4ed8; }
+        #val-display { font-size: 1.5rem; font-weight: bold; color: #2563eb; }
+        #msg { height: 20px; font-size: 0.8rem; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="main-card">
+        <h1>Vedant Sanadhya</h1>
+        <p class="bio">"Vedant | Aspiring Blockchain Developer. Currently studying in IIT Roorkee and learning how to build secure smart contracts and interactive Web3 frontends.</p>
+        
+        <div class="web3-box">
+            <h2>My First Web3 App</h2>
+            <p>Stored Number: <span id="val-display">0</span></p>
+            
+            <input type="number" id="numInput" placeholder="Enter a number">
+            <br>
+            <button class="btn" onclick="sendData()">Submit</button>
+            <p id="msg"></p>
+        </div>
+    </div>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+<script>
+    const contractAddr = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+    const myAbi = [
+        "function set(uint256 _value) public",
+        "function get() public view returns (uint256)"
+    ];
+    let myContract;
+    async function start() 
+    {
+        if (window.ethereum) 
+        {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            myContract = new ethers.Contract(contractAddr, myAbi, signer);
+            showValue();
+        } else 
+        {
+            alert("Please install MetaMask");
+        }
+    }
+
+    async function showValue() 
+    {
+        const result = await myContract.get();
+        document.getElementById("val-display").innerText = result.toString();
+    }
+
+    async function saveNewValue() 
+    {
+        const input = document.getElementById("numInput").value;
+        const status = document.getElementById("msg");  
+        status.innerText = "Wait...";
+        const tx = await myContract.set(input);
+        await tx.wait();       
+        status.innerText = "Done!";
+        showValue();
+    }
+
+    window.onload = start;
+</script>
+<div class="about-section">
+    <h3>About Me</h3>
+    <p><strong>Age: </strong> 19</p>
+    <p><strong>Education:</strong> Currently studying Metallurgy and Materials engineering at Indian Institute of Technology Roorkee.</p>
+    <p><strong>Email:</strong> <a href="mailto:sanadhyavedant7@gmail.com" style="color: #444;">sanadhyavedant7@gmail.com</a></p>
+    
+    <div class="links" style="margin-top: 10px;">
+        <a href="https://github.com/vedantks-ui" target="_blank">GitHub</a>
+    </div>
+</div>
+</body>
+</html>
